@@ -7,7 +7,7 @@ class ShotRecord < ActiveRecord::Base
 
   # @TODO: uncomment this after seeds file update
   validate :shot_date_cannot_be_in_the_future
-  validate  :expiration_date_cannot_be_in_the_past,
+  validate  :expiration_date_cannot_be_in_the_past
 
   def expiration_date_cannot_be_in_the_past
     if shot_expiration.present? && shot_expiration < Date.today
