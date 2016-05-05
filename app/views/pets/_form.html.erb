@@ -1,0 +1,160 @@
+<%= bootstrap_form_for @pet, layout: :inline, :html=> { :multipart=>true } do |f| %>
+  <% if @pet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@pet.errors.count, "error") %> prohibited this pet from being saved:</h2>
+
+      <ul>
+      <% @pet.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="panel-group">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading click_show_important">Basic Pet Information <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span></div>
+          <div class="panel-body important_section">
+
+            <div style="">
+              <span class="red", style="font-size: 1.2em; margin-left: 5%;">* </span> indicates required fields
+            </div><br>
+
+            <div class="col-md-5">
+              <div class="field">
+                <%= f.text_field :pet_name, label: "Name", size: 30 %>
+              </div>
+              <div class="field">
+                <%= f.date_field :pet_dob, label: "DOB"%>
+              </div>
+              <div class="field">
+                <%= f.select(:pet_gender, Pet::PET_GENDERS,  include_blank: true, label: "Sex") %>
+              </div>
+              <div class="field">
+                <%= f.collection_select(:color_id, Color.all.order(color_name: :asc), :id, :color_name, {include_blank:''}, {include_label:false}) %>
+              </div><br>
+              <div class="field">
+                <%= f.label "Markings" %>
+                <%= f.text_area :pet_markings, :rows => 3, :cols =>40, skip_label: true %>
+              </div><br>
+
+              <div class="field">
+                <%= f.label "Breed(s)"%><span class="red", style="font-size: 1.2em;">*</span>
+                <%= f.nested_fields_for :pet_breeds do |s| %>
+                    <%= s.collection_select(:breed_id, Breed.all, :id, :breed, include_blank: true, hide_label: true , :class => 'required')  %>
+                    <%= s.remove_nested_fields_link "remove", data: {} %>
+                <% end %>
+                <hr>
+                <%= f.add_nested_fields_link :pet_breeds, "Add breed", :class => 'btn btn-success btn-xs'%>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+              <div class="field"><b>Check where applicable:</b><br>
+
+                <div class="field">
+                  <%= f.check_box :is_spay_neutered, label: "Spayed/Neutered" %>
+                </div><br>
+
+                <div class="field">
+                  <%= f.check_box :pet_disclosure, label: "Allow diclosure of pet information" %>
+                </div><br>
+
+
+                <div class="field">
+                  <%= f.check_box :pet_status_inactive, label: "Deceased" %>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+              <%= image_tag @pet.profile_image.url(:medium) %>
+              <%= f.file_field :profile_image %>
+
+            </div>
+
+            <div class="field">
+              <%= f.hidden_field :client_id %>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="top_container">
+
+        <div class="col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading click_show">Important Notes
+              <span class="badge"><%= @pet.note_count(@pet.id) rescue "" %></span>
+              <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+            </div>
+            <div class="panel-body section">
+
+
+              <%= f.add_nested_fields_link :notes, "Add note", data: { insert_into: 'new_note' }, :class=>'btn btn-success btn-xs'%><br>
+              <div id="new_note"></div><br>
+              <%= f.nested_fields_for :notes do |s| %>
+
+                  <%= s.date_field :created_at ,:disabled=>true%>
+                  <%= s.collection_select(:note_type_id, NoteType.all, :id, :note_type, include_blank: true, :label => "Type") %>
+                  <%= s.select(:note_importance, Note::NOTE_IMPORTANCE, include_blank: true, :label => "Importance")%>
+                  <br><br>
+                  <%=s.text_area :note_description, :size=>"30x2",:label => "Description" %>
+                  <%= s.remove_nested_fields_link "Remove", data: { confirm: 'Are you sure?'}, :class => "right_button_section" %>
+                  <hr>
+
+
+              <% end %>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading click_show">Vaccinations
+              (Valid: <span class="badge"><%= @pet.valid_vaccination_count(@pet.id) rescue "0" %></span>)
+              <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+            </div>
+            <div class="panel-body section">
+
+              <%= f.add_nested_fields_link :shot_records, "Add shot record", data: { insert_into: 'new_shot_record' }, :class=>'btn btn-success btn-xs'%>
+              <div id="new_shot_record"></div><br>
+
+              <%= f.nested_fields_for :shot_records do |s| %>
+
+                  <%= s.collection_select(:vaccination_id, Vaccination.all, :id, :vaccination_name, {include_blank:''}) %><br>
+                  <%=s.date_field :shot_date %>
+                  <%=s.date_field :shot_expiration %>
+                  <%= s.remove_nested_fields_link "Remove", data: { confirm: 'Are you sure?'}, :class => "right_button_section" %>
+                  <hr>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div><br><br>
+      <div class="top_container" style="margin-left:18px;">
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+      </div>
+    </div>
+
+
+<% end %>
+
+
+

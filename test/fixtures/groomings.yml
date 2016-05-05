@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2016-04-01
+  arrival_time: 2016-04-01 17:05:43
+  pickup_time: 2016-04-01 17:05:43
+  fleas_ticks: false
+  matted_tangled: false
+  pet_id: 
+
+two:
+  date: 2016-04-01
+  arrival_time: 2016-04-01 17:05:43
+  pickup_time: 2016-04-01 17:05:43
+  fleas_ticks: false
+  matted_tangled: false
+  pet_id: 

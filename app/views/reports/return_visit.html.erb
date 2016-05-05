@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Client Visits Report</h1>
+
+<%= form_tag("return_visit", method: "get", :class=>"form-inline") do %>
+
+    <div class="panel panel-info">
+      <div class="panel-body">
+        <div class="form-group">
+          Search for Clients that have <i>not</i> returned in more than
+          <%= select_tag 'days', options_for_select(['30', '60', '90', '180', '365'],), { class: 'form-control'} %>
+          days, sort by last visit date
+        </div>
+      <div class="form-group">
+        <%= select_tag 'order', options_for_select(['Descending', 'Ascending']), { class: 'form-control'} %>
+        <%= submit_tag("Search",  :class => "btn btn-default") %>
+      </div>
+    </div>
+    </div>
+<%  end %>
+
+<div class="panel panel-info">
+  <div class="panel-heading">Clients that have not returned in more than <b><%= @num_days %></b> days, sorted in <b><%=  params[:order] %></b> order</div>
+  <div class="panel-body">
+    <table class="table-striped">
+      <thead>
+      <tr>
+        <th>Visit Date</th>
+        <th>Pet</th>
+        <th>Client</th>
+        <th>Phone</th>
+        <th>Days Since Last Visit</th>
+        <th>Allow Contact</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @visits.each do |v| %>
+          <tr>
+            <td><%= v.date.strftime("%m/%d/%Y") rescue ""%></td>
+            <td><%= link_to v.pet.pet_name.upcase, pets_show_path(id: v.pet.id), :style=>"text-decoration: underline;",
+                            :target => "_blank" rescue ""%></td>
+            <td><%=link_to v.pet.client.client_full_name,
+                           clients_show_path(id: v.pet.client.id),
+                           :style=>"text-decoration: underline;",
+                   :target => "_blank"%>
+            </td>
+            <td><%= number_to_phone(v.pet.client.client_telephone , area_code: true) rescue ""%></td>
+            <td><%= distance_of_time_in_words(v.date, Time.now) rescue ""%></td>
+
+            <% if v.pet.client.client_allow_status.casecmp('yes') == 0%>
+                <td class="green">
+            <% else %>
+                <td class="red">
+            <% end %>
+            <%=  v.pet.client.client_allow_status %>
+
+            <td><%= link_to 'Show', v, :class=> "btn btn-info btn-sm" %></td>
+            <td><%= link_to 'Edit', edit_grooming_path(v), :class=> "btn btn-warning btn-sm" %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-footer">
+    <%= will_paginate @visits, renderer: BootstrapPagination::Rails %>
+  </div>
+</div>

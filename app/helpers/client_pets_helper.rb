@@ -1,0 +1,2 @@
+module ClientPetsHelper
+end

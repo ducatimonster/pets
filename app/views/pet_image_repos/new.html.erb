@@ -1,0 +1,7 @@
+<% @pet_name = Pet.find(@pet_image_repo.pet_id).pet_name%>
+
+<h1>Upload <%= @pet_name.upcase %>'s Images</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back to ' + @pet_name + "'s Profile", pets_show_path(id: @pet_image_repo.pet_id), :class=>"btn btn-info" %>

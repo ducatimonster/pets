@@ -1,0 +1,47 @@
+// Place all the styles related to the Pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+//@TODO: Can't turn off the nav on only this page
+//#primary_nav_wrap{
+//  display: none;
+//  visibility: hidden;
+//}
+
+#login_button{
+  position: absolute;
+  top:0;
+  right:0;
+}
+
+#aside1 {
+  line-height:30px;
+
+  height:auto;
+  width:auto;
+  float:left;
+  padding:5px;
+}
+
+#aside2 {
+  line-height:30px;
+
+  height:auto;
+  width:auto;
+  float:right;
+  padding:5px;
+}
+
+#section {
+
+  width: 800px;
+  height: auto;
+  float:left;
+  padding:10px;
+  float: left;
+}
+
+#container{
+  background-color: white;
+  height:500px;
+}

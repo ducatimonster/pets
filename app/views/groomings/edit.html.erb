@@ -1,0 +1,7 @@
+
+
+<h1>Edit <%= @grooming.pet.pet_name.upcase %>'s Grooming Visit</h1>
+
+<%= render 'form' %><br>
+
+<%= link_to 'Back to ' + @pet_name + '\'s Profile' , pets_show_path(id: @pet_id), :class=> "btn btn-info"  %>

@@ -1,0 +1,16 @@
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Color name:</strong>
+      <%= @color.color_name %>
+    </p>
+
+    <%= link_to 'Edit', edit_color_path(@color), :class=> "btn btn-warning" %>
+    <%= link_to 'New Color', new_color_path, :class=> "btn btn-success"  %>
+    <%= link_to 'Back to Color List', colors_path, :class=> "btn btn-primary"  %>
+
+  </div>
+</div>

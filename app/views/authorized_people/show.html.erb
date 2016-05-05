@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Authorized Person for <%= @authorized_person.client.client_full_name %></strong>
+</p>
+<p>
+  <hr>
+  <strong>Full name:</strong>
+  <%= @authorized_person.full_name.split.map(&:capitalize).join(' ') %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= number_to_phone(@authorized_person.authorized_person_telephone, area_code: true) %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_authorized_person_path(@authorized_person), :class => "btn btn-warning sm" %>
+<%= link_to 'Back to '  + @authorized_person.client.client_full_name + 's Profile' , clients_show_path(:id => @authorized_person.client_id), :class => "btn btn-info sm" %>

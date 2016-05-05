@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @client_pet.client %>
+</p>
+
+<p>
+  <strong>Pet:</strong>
+  <%= @client_pet.pet %>
+</p>
+
+<%= link_to 'Edit', edit_client_pet_path(@client_pet) %> |
+<%= link_to 'Back', :back %>

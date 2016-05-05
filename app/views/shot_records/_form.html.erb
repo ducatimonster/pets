@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= bootstrap_form_for(@shot_record) do |f| %>
+        <% if @shot_record.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@shot_record.errors.count, "error") %> prohibited this shot_record from being saved:</h2>
+
+              <ul>
+                <% @shot_record.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="field">
+          <%= f.collection_select(:vaccination_id, Vaccination.all, :id, :vaccination_name, {include_blank:''}) %>
+        </div>
+        <div class="field">
+          <%= f.date_field :shot_date, label:"Give date" %>
+        </div>
+        <div class="field">
+          <%= f.date_field :shot_expiration, label:"Expiration date" %>
+        </div>
+        <div class="field">
+          <%= f.hidden_field :pet_id %>
+        </div>
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+    <% end %>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+

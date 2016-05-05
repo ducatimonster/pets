@@ -1,0 +1,63 @@
+class Client < ActiveRecord::Base
+  has_many :pets, :dependent => :delete_all
+  has_many :authorized_people
+
+  validates_presence_of :client_last_name,:client_first_name,
+  :client_address, :client_emergency_telephone,
+  :client_telephone
+
+  accepts_nested_attributes_for :authorized_people, :allow_destroy => true
+
+
+  def client_current_status
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.client_status == true
+      "Inactive"
+    else
+      "Active"
+    end
+  end
+
+  def client_allow_status
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.allow_contact == true
+      "Yes"
+    else
+      "No"
+    end
+  end
+
+
+  def client_full_name
+    "#{self.client_first_name} #{self.client_last_name}"
+  end
+
+  REFERRAL = ["Facebook", "Yelp", "Instagram", "Friends/Family", "Client", "Other Social Media"]
+
+
+  def self.search(search)
+
+    select('(client_first_name || " " || client_last_name) as \'full_name\', *')
+    .where("client_first_name LIKE :search OR " \
+    "client_last_name LIKE :search OR " \
+    ":search LIKE client_first_name + client_last_name OR " \
+    "full_name LIKE :search OR " \
+    "client_email LIKE :search OR " \
+    "client_telephone LIKE :search OR " \
+    "client_emergency_telephone LIKE :search OR " \
+    "client_address LIKE :search " , search: "%#{search}%")
+
+
+
+  end
+  # scope :client_status, -> (client_status) {where client_status: client_status}
+
+  def pet_count(client_id)
+    Client.find(client_id).pets.size
+  end
+
+
+  def authorized_person_count(client_id)
+    Client.find(client_id).authorized_people.size
+  end
+end

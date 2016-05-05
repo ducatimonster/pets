@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Authorized People</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Full name</th>
+      <th>Phone</th>
+      <th>Client</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @authorized_people.each do |authorized_person| %>
+      <tr>
+        <td><%= authorized_person.full_name %></td>
+        <td><%= number_to_phone(authorized_person.authorized_person_telephone, area_code: true) %></td>
+        <td><%= authorized_person.client.client_full_name rescue "" %></td>
+        <!--<td><%= link_to 'Show', authorized_person %></td>-->
+        <!--<td><%= link_to 'Edit', edit_authorized_person_path(authorized_person), :class=>"btn btn-warning sm" %></td>-->
+        <td><%= link_to 'Delete', authorized_person, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if false %>
+
+<br>
+
+<h2>Import Authorized People</h2>
+
+<%= form_tag import_authorized_people_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+<% end %>
+<br>
+

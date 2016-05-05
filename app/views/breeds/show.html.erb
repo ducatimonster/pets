@@ -1,0 +1,16 @@
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Breed:</strong>
+      <%= @breed.breed %>
+    </p>
+
+    <%= link_to 'Edit',  edit_breed_path(@breed), :class=> "btn btn-warning" %>
+    <%= link_to 'New Breed', new_breed_path, :class=> "btn btn-success"  %>
+    <%= link_to 'Back to Breed List', breeds_path, :class=> "btn btn-primary"  %>
+
+  </div>
+</div>

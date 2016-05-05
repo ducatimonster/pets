@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Notes</h1>
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Note date</th>
+      <th>Note description</th>
+      <th>Note importance</th>
+      <th>Note type</th>
+      <th>Pet</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notes.each do |note| %>
+      <tr>
+        <td><%= note.created_at.strftime("%m/%d/%Y") %></td>
+        <td><%= note.note_description %></td>
+        <td><%= note.note_importance %></td>
+        <td><%= note.note_type.note_type rescue "" %></td>
+        <td><%= note.pet.pet_name rescue "" %></td>
+        <td><%= link_to 'Show', note, :class=>"btn btn-info sm" %></td>
+        <td><%= link_to 'Edit', edit_note_path(note), :class=>"btn btn-warning sm" %></td>
+        <!--<td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<!--<h2>Import Notes</h2>-->
+
+<!--<%= form_tag import_notes_path, multipart: true do %>-->
+    <!--<%= file_field_tag :file %>-->
+    <!--<%= submit_tag "Import" %>-->
+<!--<% end %>-->
+
+<br>
+

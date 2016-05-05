@@ -1,0 +1,18 @@
+<%= form_for(@shot_record) do |f| %>
+
+<%= f.nested_fields_for :shot_record,legend: "Shot Record" do  |s| %>
+    <p>
+      <%=s.label :shot_record %>
+      <%= s.collection_select(:vaccination_id, Vaccination.all.order('name ASC'), :id, :vaccination_name, {include_blank:''}) %></br></br>
+      <%= s.remove_nested_fields_link "Remove shot record", data: { confirm: 'Are you sure?'} %>
+
+    </p>
+
+<% end %>
+
+<p>
+
+  <%= f.add_nested_fields_link :shot_records, "Add another shot record",  :class=>"btn btn-default" %>
+</p>
+
+<% end %>

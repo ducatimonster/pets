@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  note_date: 2016-03-27
+  note_description: MyText
+  note_importance: MyString
+  note_type_id: 
+  pet_id: 
+
+two:
+  note_date: 2016-03-27
+  note_description: MyText
+  note_importance: MyString
+  note_type_id: 
+  pet_id: 

@@ -1,0 +1,34 @@
+<% @pet_name = Pet.find(@pet_id).pet_name%>
+
+<p id="notice"><%= notice %></p>
+
+<h1><%= @pet_name.upcase %>'s Images</h1>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Comment</th>
+    <th>Uploaded on</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @images.each do |i| %>
+      <tr>
+        <td><%= image_tag i.image.url(:thumb) rescue ""%></td>
+        <td><%= i.comment %></td>
+        <td><%= i.created_at.strftime("%m/%d/%Y") %></td>
+        <td><%= link_to 'Edit', edit_pet_image_repo_path(i), :class => "btn btn-warning btn-xs" %></td>
+        <td><%= link_to 'Delete', i, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs" %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<br>
+
+<%= link_to 'Upload new image', new_pet_image_repo_path(:pet_id => @pet_id), :class=> "btn btn-success btn" %>
+<%= link_to 'Back to ' + @pet_name + "'s Profile", pets_show_path(id: @pet_id), :class=> "btn btn-info" %>
+
+

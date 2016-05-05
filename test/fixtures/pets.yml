@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pet_name: MyString
+  pet_dob: 2016-03-23
+  pet_gender: MyString
+  pet_color: MyString
+  pet_markings: MyText
+  pet_status_inactive: false
+  pet_disclosure: false
+  is_spay_neutered: false
+  client_id: 
+
+two:
+  pet_name: MyString
+  pet_dob: 2016-03-23
+  pet_gender: MyString
+  pet_color: MyString
+  pet_markings: MyText
+  pet_status_inactive: false
+  pet_disclosure: false
+  is_spay_neutered: false
+  client_id: 

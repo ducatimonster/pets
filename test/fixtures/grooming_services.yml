@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  service_id: 
+  grooming_id: 
+  notes: MyText
+
+two:
+  service_id: 
+  grooming_id: 
+  notes: MyText

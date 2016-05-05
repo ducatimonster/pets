@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <thead>
+  <tr>
+    <th>Incident date</th>
+    <th>Incident description</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @pet_incidents.each do |incident| %>
+      <tr>
+        <td><%= incident.incident_date rescue ""%></td>
+        <td><%= incident.incident_description %></td>
+        <td><%= link_to 'Show', incident %></td>
+        <td><%= link_to 'Edit', edit_incident_path(incident) %></td>
+        <!--<td><%= link_to 'Destroy', incident, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+      </tr>
+  <% end %>
+  </tbody>
+</table>

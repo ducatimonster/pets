@@ -1,0 +1,13 @@
+add client search
+update pet search 
+update links section
+ client, pet, report, admin
+ clienat -> search client, search pet
+add homepage
+
+
+Ask diana about new system change over
+-Do you have a printer? Would you want to print out reports?
+
+--Bugs
+Need to be able to specify new pets with existing owners

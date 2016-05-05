@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= bootstrap_form_for(@service) do |f| %>
+        <div style="text-align: center;">
+          <span class="red" style="font-size: 1.2em;">* </span> indicates required fields
+        </div><br>
+
+        <% if @service.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
+            </div>
+        <% end %>
+        <div class="field ">
+          <%= f.text_field :service_name, label:"Name", size:"30" %>
+        </div><br>
+
+        <div class="field">
+          <%= f.text_area :service_description, label:"Description", size:"50x5",  maxlength: @maximum_length, id: 'description_text' %>
+          Chars left: <span id="counter" data-maximum-length="<%= @maximum_length %>"><%= @maximum_length %></span>
+        </div><br>
+
+        <div class="field">
+          <b><%= f.check_box :service_status_inactive, label: "Mark if service no longer offered"%></b>
+
+        </div>
+
+
+
+        <div class="actions col-sm-12">
+          <%= f.submit %>
+        </div>
+    <% end %>
+
+
+  </div>
+</div>
+

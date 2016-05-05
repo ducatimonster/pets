@@ -1,0 +1,237 @@
+<p id="notice"><%= notice %></p>
+  <h1>
+    <%= @pet.pet_name.upcase %>'s Profile
+  </h1>
+
+<div class="top_container">
+
+  <div class="col-md-12 top_container btn-group">
+    <a href="" class="btn btn-default">Add new...</a>
+    <%= link_to 'Visit', new_grooming_path(:pet_id => @pet.id),:class=>"btn btn-success"  %>
+    <%= link_to 'Vaccination', new_shot_record_path(:pet_id => @pet.id), :class=>"btn btn-success" %>
+    <%= link_to 'Note', new_note_path(:pet_id => @pet.id), :class=>"btn btn-success" %>
+    <%= link_to 'Image', new_pet_image_repo_path(:pet_id => @pet.id), :class=>"btn btn-success" %>
+    <%= link_to 'View Owner \'s Profile', clients_show_path(id: @pet.client.id), :class=>"btn btn-info" %>
+  </div>
+  <hr>
+  <div class="panel-group">
+<div class="col-md-8">
+  <div class="panel panel-default">
+    <div class="panel-heading click_show_important">About Pet
+      <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span>
+    </div>
+    <div class="panel-body important_section">
+      <p>
+        Name: <b><%= @pet.pet_name.upcase%></b>
+      </p>
+      <p>
+        DOB: <b><%= @pet.pet_dob.strftime("%m/%d/%Y") rescue ""%></b>
+      </p>
+      <p>
+        Age: <b><%= @pet.pet_age rescue ""%></b>
+      </p>
+      <p>
+        Sex: <b><%= @pet.pet_gender%></b>
+      </p>
+      <p>
+        Breed(s):
+        <%= @pet.pet_breeds.b rescue "" %>
+        <% @pet_breeds.each do |b| %>
+            <b>[<%= b.breed.breed %>]</b>
+        <% end %>
+
+        <!--<%= @pet.get_pet_breeds(@pet.id).each_char do |b| %>-->
+            <!--<strong><%= b.breed rescue ""%></strong>-->
+            <!--<% end %>-->
+
+
+
+
+      </p>
+      <p>
+        Color: <b><%= @pet.color.color_name rescue "" %></b>
+      </p>
+      <p>
+        Markings: <b><%= @pet.pet_markings%></b>
+      </p>
+      <p>
+        Spayed/Neutered: <b><%= @pet.spayed_neutered_status %></b>
+      </p>
+      <p>
+        Disclosure: <b><%= @pet.disclosure_status %></b>
+      </p>
+      <p>Status:
+        <b><span>
+               <% if @pet.pet_status_inactive == false%>
+              <span class="green">
+          <% else %>
+                   <span class="red">
+          <% end %>
+          <%= @pet.pet_status %></b>
+        </span>
+      </p>
+
+      <%= link_to "Edit", edit_pet_path(@pet), :class => "right_button_section btn btn-warning" %>
+
+    </div>
+
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading click_show ">About Owner
+      <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+    </div>
+    <div class="panel-body section">
+      <table class="table-responsive">
+        <caption>Owner Information</caption>
+        <tr>
+          <th width="30%">Name</th>
+          <th width="20%">Phone</th>
+          <th width="20%">Emergency Phone</th>
+          <th width="30%">Email</th>
+
+        </tr>
+        <tr>
+          <td>  <%= @pet.client.client_full_name rescue "" %></td>
+          <td>   <%= number_to_phone( @pet.client.client_telephone, area_code: true)  rescue ""%></td>
+          <td>   <%= number_to_phone( @pet.client.client_emergency_telephone, area_code: true) rescue ""%></td>
+          <td>   <%= @pet.client.client_email rescue ""%></td>
+        </tr>
+
+      </table>
+
+      <br>
+      <%= render 'authorized_people/index'%>
+
+      <br>
+      <%= link_to 'View Owner \'s Profile' , clients_show_path(id: @pet.client.id), :class => "right_button_section btn btn-info" %>
+      <%= link_to 'Edit' , edit_client_path(@pet.client), :class => "right_button_section btn btn-warning" %>
+
+    </div>
+  </div>
+</div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body center">
+        <% if @pet.profile_image.present? %>
+            <br><%= @pet.profile_image_updated_at.strftime("Uploaded on %m/%d/%Y") rescue ""%><br><br>
+            <a data-toggle="modal" data-target="#viewPicture">
+              <%= image_tag @pet.profile_image.url(:medium), :class => "img-rounded" %>
+            </a><br><br>
+
+            Click image expand
+
+            <!-- Modal -->
+            <div id="viewPicture" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                      <%= @pet.pet_name %><br>
+
+
+                    </h4>
+                  </div>
+                  <div class="modal-body">
+                    <%= image_tag @pet.profile_image.url(:large) %><br><br>
+
+                    <%= @pet.profile_image_updated_at.strftime("%m/%d/%Y") rescue ""%>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+      <% else %>
+            <%= image_tag("dog_only.png", :alt => "no profile image", :width => "20%") %><br><br>
+            <p><%= @pet.pet_name %> doesn't have a profile image. Click "Edit" in the About Pet panel to upload one.</p>
+        <% end %>
+
+
+        </div>
+      </div>
+  </div>
+
+ <div class="col-md-8" >
+   <div class="panel panel-default">
+     <div class="panel-heading click_show_important">Notes
+       <span class="badge"><%= @pet.note_count(@pet.id) rescue "" %></span>
+       <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span>
+     </div>
+     <div class="panel-body important_section">
+       <%= render '/notes/index' %>
+
+       <%= link_to 'New Note', new_note_path(:pet_id => @pet.id), :class=> "btn btn-success btn-sm right_button_section" %>
+
+     </div>
+   </div>
+ </div>
+
+  <div class="col-md-4" >
+    <div class="panel panel-default">
+      <div class="panel-heading click_show_important">
+        Valid Vaccinations
+        <span class="badge"><%= @pet.valid_vaccination_count(@pet.id) rescue "0" %></span>
+        <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+      </div>
+      <div class="panel-body important_section">
+        <%= render '/shot_records/index' %>
+
+<br>
+        <%= link_to 'New Shot Record', new_shot_record_path(:pet_id => @pet.id), :class=> "btn btn-success btn-sm right_button_section" %>
+        <%= link_to 'View All Shot Records', shot_records_pet_shot_record_index_path(:pet_id => @pet.id), :class=> "btn btn-info btn-sm right_button_section" %>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" >
+
+      <div class="panel panel-default">
+        <div class="panel-heading click_show">Recent Visits
+          <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+        </div>
+        <div class="panel-body section">
+          <%= render '/groomings/index' %>
+
+          <%= link_to 'New Visit', new_grooming_path(:pet_id => @pet.id), :class=> "btn btn-success btn-sm right_button_section" %>
+          <%= link_to 'View All Visits', groomings_pet_grooming_index_path(:pet_id => @pet.id), :class=> "btn btn-info btn-sm right_button_section" %>
+
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading click_show">Recent Images
+          <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+        </div>
+        <div class="panel-body section">
+          <%= render '/pet_image_repos/index' %><br><br>
+
+          <%= link_to 'Upload images', new_pet_image_repo_path(:pet_id => @pet.id), :class=> "btn btn-success btn-sm right_button_section" %>
+          <%= link_to 'View All Images', pet_image_repos_pet_image_index_path(:pet_id => @pet.id), :class=> "btn btn-info btn-sm right_button_section" %>
+
+        </div>
+      </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading click_show">Incidents
+      <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+      </div>
+        <div class="panel-body section">
+        <%= render '/pet_incidents/index' %>
+<br>
+          <%= link_to 'Record Incident', new_incident_path(:pet_id => @pet.id), :class=> "btn btn-success btn-sm right_button_section" %>
+      </div>
+    </div>
+    </div>
+</div>
+
+</div>
+
+</div>

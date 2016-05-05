@@ -1,0 +1,47 @@
+<% @pet_name = Pet.find(@pet_id).pet_name%>
+
+<p id="notice"><%= notice %></p>
+
+
+<h1><%= @pet_name.upcase %>'s Grooming Visit History</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <table>
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Arrival time</th>
+        <th>Pickup time</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @groomings.each do |grooming| %>
+          <tr>
+            <td><%= grooming.date.strftime("%m/%d/%Y") rescue ""%></td>
+            <td><%= grooming.arrival_time.strftime("%I:%M%p") rescue ""%></td>
+            <% if grooming.pickup_time.present? && grooming.date.strftime("%m/%d/%Y") == grooming.pickup_time.strftime("%m/%d/%Y")%>
+                <td><%= grooming.pickup_time.strftime(" %I:%M%p") rescue""%></td>
+            <% else %>
+                <td><%= grooming.pickup_time.strftime("%A, %m/%d/%Y at  %I:%M%p") rescue ""%></td>
+            <% end %>
+            <td><%= link_to 'Show', grooming, :class=>"btn btn-info sm" %></td>
+            <td><%= link_to 'Edit', edit_grooming_path(grooming), :class=>"btn btn-warning sm"%></td>
+            <td><%= link_to 'Delete', grooming, method: :delete, data: { confirm: 'Are you sure?' },  :class=>"btn btn-danger sm"%></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'New Visit', new_grooming_path(:pet_id => @pet_id), :class=> "btn btn-success"  %>
+    <%= link_to 'Back to ' + @pet_name + '\'s Profile' , pets_show_path(id: @pet_id), :class=> "btn btn-info"  %>
+  </div>
+</div>
+
+
+
+

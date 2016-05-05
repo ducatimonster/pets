@@ -1,0 +1,91 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pet Incidents</h1>
+
+
+<%= form_tag("incidents", method: "get", :class=>"form-inline") do %>
+
+    <div class="panel panel-danger">
+      <div class="panel-body">
+        <div class="form-group">
+          Search pet incidents that fall between
+          <%= date_field_tag(:begindate, @begindate, :class => "form-control", :id => "begin_date")%>
+          and
+        </div>
+
+        <div class="form-group">
+          <%= date_field_tag(:enddate, @enddate, :class => "form-control", :id => "end_date") %>
+          sort by
+        </div>
+
+        <div class="form-group">
+          <%= select_tag 'order', options_for_select(['Ascending', 'Descending']), { class: 'form-control'} %>
+          <%= submit_tag("Search",  :class => "btn btn-default") %>
+        </div>
+      </div>
+
+    </div>
+<%  end %>
+
+
+<div class="panel panel-danger">
+  <% if params[:begindate] == Date.today || params[:begindate] == nil  %>
+      <div class="panel-heading"><b>Today's</b> Pet Incidents</div>
+  <% elsif params[:begindate].present? &&  params[:enddate].present? %>
+      <div class="panel-heading">Pet Incidents between
+        <b><%= @beginF %></b>
+        and <b>
+        <%= @endF %></b>,
+        sorted in <b><%= params[:order] %></b> order
+
+      </div>
+  <% end %>
+  <div class="panel-body">
+    <table>
+      <thead>
+      <tr>
+        <th>Incident date</th>
+        <th>Pets Involved</th>
+        <th>Incident description</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @incidents.each do |incident| %>
+          <tr>
+            <td><%= incident.incident_date.strftime("%m/%d/%Y") %></td>
+            <td>
+              <%= incident.get_pet_names(incident.id).each_char do |b| %>
+                  <b><%= b.pet_name rescue ""%></b>
+              <% end %>
+            </td>
+            <td><%= incident.incident_description %></td>
+            <td><%= link_to 'Show', incident, :class=> "btn btn-info"%></td>
+            <td><%= link_to 'Edit', edit_incident_path(incident), :class=> "btn btn-warning" %></td>
+            <!--<td><%= link_to 'Destroy', incident, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-footer">
+    <%= will_paginate @incidents, renderer: BootstrapPagination::Rails rescue ""%>
+
+    <%= link_to 'New Incident', new_incident_path,  :class=>"btn btn-success" %>
+  </div>
+
+</div>
+
+
+
+<!--<h2>Import Incidents</h2>-->
+
+<!--<%= form_tag import_incidents_path, multipart: true do %>-->
+    <!--<%= file_field_tag :file %>-->
+    <!--<%= submit_tag "Import" %>-->
+    <!--<% end %>-->
+
+<br>
+

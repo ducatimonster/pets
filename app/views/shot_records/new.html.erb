@@ -1,0 +1,7 @@
+<% @pet_name = Pet.find(@shot_record.pet_id).pet_name%>
+
+<h1>New Shot Record</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back to ' + @pet_name + "'s Profile", pets_show_path(id: @shot_record.pet_id), :class=>"btn btn-info" %>

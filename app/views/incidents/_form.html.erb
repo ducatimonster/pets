@@ -1,0 +1,56 @@
+
+
+  <%= bootstrap_form_for(@incident, layout: :inline) do |f| %>
+      <% if @incident.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@incident.errors.count, "error") %> prohibited this incident from being saved:</h2>
+
+            <ul>
+              <% @incident.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+
+      <!--<div class="col-md-12">-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="field">
+              <%= f.date_field :incident_date, label: "Date:" %><br><br>
+
+              <%= f.nested_fields_for :pet_incidents do |s| %>
+                  <%= s.collection_select(:pet_id, Pet.where("pet_status_inactive = ?", false).order(pet_name: :asc), :id, :pet_owner_name, {include_blank:''}, {include_label:false}) %>
+
+                  <%= s.remove_nested_fields_link "Remove", data: { confirm: 'Are you sure?'} %>
+
+              <% end %><br>
+
+              <%= f.add_nested_fields_link :pet_incidents, "Add pet", class: "btn btn-success btn-xs" %>
+<hr>
+
+                  <div class="field">
+                    <%= f.text_area :incident_description, size: "80x10" %>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+      <div class="col-md-12">
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+      <!--</div>-->
+
+  <% end %>
+
+</div>
+
+  <!--<div class="panel panel-default">-->
+    <!--<div class="panel-body">A Basic Panel</div>-->
+  <!--</div>-->

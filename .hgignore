@@ -1,0 +1,17 @@
+log/development.log
+syntax: glob
+
+# These are Rails related files to ignore
+
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/*
+
+# Mac and Mercurial files to ignore
+.DS_Store
+.orig
+
+# JetBrains files to ignore
+.idea/workspace.xml
+

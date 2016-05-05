@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <%= image_tag @pet_image_repo.image.url(:thumb) %>
+</p>
+<p>
+  <strong>Pet:</strong>
+  <%= @pet_image_repo.pet.pet_name %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @pet_image_repo.comment %>
+</p>
+
+<%= link_to 'Add Image', new_pet_image_repo_path(:pet_id => @pet_image_repo.pet.id), :class=> "btn btn-success"   %>
+<%= link_to 'Back to ' + @pet_image_repo.pet.pet_name + '\'s Profile' , pets_show_path(id: @pet_image_repo.pet.id), :class=> "btn btn-info"  %>

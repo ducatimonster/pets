@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  full_name: MyString
+  authorized_person_telephone: MyString
+  client_id: 
+
+two:
+  full_name: MyString
+  authorized_person_telephone: MyString
+  client_id: 

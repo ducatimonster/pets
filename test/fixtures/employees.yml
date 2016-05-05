@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee_first_name: MyString
+  employee_last_name: MyString
+  emergency_contact_number: MyString
+  employee_status: false
+
+two:
+  employee_first_name: MyString
+  employee_last_name: MyString
+  emergency_contact_number: MyString
+  employee_status: false

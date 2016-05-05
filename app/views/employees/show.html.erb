@@ -1,0 +1,32 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Employee first name:</strong>
+      <%= @employee.employee_first_name %>
+    </p>
+
+    <p>
+      <strong>Employee last name:</strong>
+      <%= @employee.employee_last_name %>
+    </p>
+
+    <p>
+      <strong>Phone:</strong>
+      <%= @employee.emergency_contact_number %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @employee.employee_current_status %>
+    </p>
+
+
+    <%= link_to 'Edit',  edit_employee_path(@employee), :class=> "btn btn-warning" %>
+    <%= link_to 'New Employee', new_employee_path, :class=> "btn btn-success"  %>
+    <%= link_to 'Back to Employee List', employees_path, :class=> "btn btn-primary"  %>
+  </div>
+</div>

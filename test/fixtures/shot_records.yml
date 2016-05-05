@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vaccination_id: 
+  shot_date: 2016-03-27
+  shot_expiration: 2016-03-27
+  pet_id: 
+
+two:
+  vaccination_id: 
+  shot_date: 2016-03-27
+  shot_expiration: 2016-03-27
+  pet_id: 

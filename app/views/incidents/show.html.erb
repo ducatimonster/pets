@@ -1,0 +1,79 @@
+<p id="notice"><%= notice %></p>
+
+<p id="notice"><%= notice %></p>
+<h1>Incident summary</h1>
+
+
+<div class="panel panel-danger">
+  <div class="panel-heading">Incident Information</div>
+  <div class="panel-body" id="table_container">
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th>Incident Date:</th>
+        <td><%= @incident.incident_date.strftime("%A, %m/%d/%Y") rescue "" %></td>
+      </tr>
+      <tr>
+        <th>Description:</th>
+        <td><%= @incident.incident_description %></td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>
+
+
+<div class="panel panel-danger">
+  <div class="panel-heading">Pets Involved</div>
+  <div class="panel-body">
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Pet Name</th>
+        <th>Breed(s)</th>
+        <th>Owner</th>
+        <th>Phone</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @incident.pet_incidents.each do |g| %>
+          <tr>
+
+            <td><%= link_to g.pet.pet_name.upcase, pets_show_path(id: g.pet.id), :style=>"text-decoration: underline;", :target => "_blank" %></td>
+
+            <td>
+              <%= g.pet.get_pet_breeds(g.pet.id).each_char do |b| %>
+                  <b><%= b.breed rescue ""%></b>
+              <% end %>
+            </td>
+            <td><%= link_to g.pet.client.client_full_name, clients_show_path(id: g.pet.client.id), :style=>"text-decoration: underline;", :target => "_blank"  %></td>
+            <td><%=  number_to_phone(g.pet.client.client_telephone  , area_code: true)%></td>
+
+            <!--<td><%= link_to 'Show', g, :class=>"btn btn-info sm" %></td>-->
+            <!--<td><%= link_to 'Edit', edit_grooming_service_path(g), :class=>"btn btn-warning sm" %></td>-->
+            <td><%= link_to 'Delete', g, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-danger sm" %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="panel-footer">
+  <%= link_to 'Edit', edit_incident_path(@incident), :class=> "btn btn-warning"   %>
+  <%= link_to 'New Incident', new_incident_path, :class=> "btn btn-success"   %>
+  <%= link_to 'Back to Incident List', reports_incidents_path, :class=> "btn btn-info"   %>
+</div>
+
+<style>
+  #table_container {
+    margin: auto;
+  }
+  th {
+    width: 20%;
+  }
+
+</style>

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Pet Image Repos</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Pet</th>
+    <th>Comment</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @pet_image_repos.each do |pet_image_repo| %>
+      <tr>
+        <td><%= pet_image_repo.pet.pet_name %></td>
+        <td><%= pet_image_repo.comment %></td>
+        <!--<td><%= link_to 'Show', pet_image_repo %></td>-->
+        <!--<td><%= link_to 'Edit', edit_pet_image_repo_path(pet_image_repo) %></td>-->
+        <!--<td><%= link_to 'Delete', pet_image_repo, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>

@@ -1,0 +1,132 @@
+class Pet < ActiveRecord::Base
+  belongs_to :client
+  belongs_to :color
+  require 'roo'
+
+  has_many :shot_records, :dependent => :delete_all
+  accepts_nested_attributes_for :shot_records, :allow_destroy => true, reject_if: :all_blank
+
+  has_many :pet_breeds
+  accepts_nested_attributes_for :pet_breeds, reject_if: :all_blank, :allow_destroy => true
+
+  has_many :notes
+  accepts_nested_attributes_for :notes,reject_if: :all_blank, :allow_destroy => true
+
+  has_many :pet_image_repos
+  has_many :pet_incidents
+  has_many :groomings
+
+  has_many :pet_image_repos
+  accepts_nested_attributes_for :pet_image_repos,reject_if: :all_blank, :allow_destroy => true
+
+  has_attached_file :profile_image, styles: {  medium: "300x300", thumb: "150x150", large: "600x600" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\Z/
+
+  validates :pet_name, :pet_gender, :color_id, :client_id, presence: true
+
+  PET_GENDERS = ["Male", "Female"]
+
+  validate :must_have_one_breed
+
+   def must_have_one_breed
+     errors.add :base, "Pet must be of at least one breed" if pet_breeds_empty?
+   end
+
+  def pet_breeds_empty?
+    pet_breeds.empty? or pet_breeds.all? {|b| b.marked_for_destruction? }
+  end
+
+  def pet_age
+    date = Date.today
+    dob = self.pet_dob
+    day_diff = date.day - dob.day
+    month_diff = date.month - dob.month - (day_diff < 0 ? 1 : 0)
+    date.year - dob.year - (month_diff < 0 ? 1 : 0)
+  end
+
+  def pet_status
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.pet_status_inactive == true
+      "Deceased"
+    else
+      "Alive"
+    end
+  end
+
+
+  def disclosure_status
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.pet_disclosure == true
+      "Can release pet information"
+    else
+      "Cannot release pet information"
+    end
+  end
+
+  def spayed_neutered_status
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.is_spay_neutered == true
+      "Yes"
+    else
+      "No"
+    end
+  end
+
+  def note_count(pet_id)
+    Pet.find(pet_id).notes.size
+  end
+
+  def image_count(pet_id)
+    Pet.find(pet_id).pet_image_repos.size
+  end
+
+  def   valid_vaccination_count(pet_id)
+    ShotRecord.where("pet_id = ? AND shot_expiration > ?", pet_id, Date.today).count
+  end
+
+
+def find_client_id
+
+end
+
+  def self.search(search)
+    # where("pet_name LIKE ? or pet_markings LIKE ?" ,"%#{search}%", "%#{search}%")
+    # where("pet_markings LIKE ?", "%#{search}%")
+
+
+    select('(client_first_name || " " || client_last_name) as \'full_name\', *')
+        .joins(:client)
+    .where( "pet_name LIKE :search \
+          or pet_dob LIKE :search \
+          or full_name like :search \
+          or client_id LIKE :search \
+          or pet_markings LIKE :search ", search: "%#{search}%")
+
+
+    # where ("content LIKE ?", "%#{search}%")
+  end
+
+  def self.import(file)
+    allowed_attributes = ['pet']
+    spreadsheet = open_spreadsheet(file)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      pet = find_by_id(row["id"]) || new
+      pet.attributes = row.to_hash.slice(*row.to_hash.keys)
+      pet.save!
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+      when ".csv" then Roo::CSV.new(file.path, nil, :ignore)
+      when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+      when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+      else raise "Unknown file type: #{file.original_filename}"
+    end
+  end
+
+
+
+end

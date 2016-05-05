@@ -1,0 +1,166 @@
+<p id="notice"><%= notice %></p>
+
+
+
+  <h1>
+    Client: <%= @client.client_full_name%>'s Profile
+  </h1>
+
+<div class="top_container">
+
+  <div class="col-md-12 top_container btn-group">
+    <a href="" class="btn btn-default">Add new...</a>
+    <%= link_to 'Pet', new_pet_path(:client_id => @client.id),:class=>"btn btn-success"  %>
+    <%= link_to 'Authorized Person', new_authorized_person_path(:client_id => @client.id), :class=>"btn btn-success" %>
+  </div>
+  <hr>
+
+    <div class="panel-group">
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading click_show_important">Client's Basic Information
+            <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span>
+          </div>
+          <div class="panel-body  important_section">
+            <p>
+              First Name:
+              <b><%= @client.client_first_name.capitalize %></b>
+            </p>
+
+            <p>
+              Last Name:
+                <b><%= @client.client_last_name.capitalize %></b>
+            </p>
+
+            <p>
+              Phone:
+              <b><%= number_to_phone(@client.client_telephone, area_code: true)%></b>
+            </p>
+
+            <p>
+              Email:
+              <b><%= @client.client_email %></b>
+            </p>
+
+            <p>
+              Emergency Phone:
+              <b><%= @client.client_emergency_telephone %></b>
+            </p>
+
+            <p>
+              Address:
+              <b><%= @client.client_address %></b>
+            </p>
+
+            <p>
+              Allow Contact:
+              <b><%= @client.client_allow_status %></b>
+            </p>
+            <p>
+              Referred by:
+              <b><%= @client.referred %></b>
+            </p>
+            <p>
+              Status:
+              <span>
+              <% if @client.client_status == false%>
+                  <b><span class="green">
+              <% else %>
+                       <span class="red">
+              <% end %>
+              <b></b><%= @client.client_current_status %></b>
+              </span>
+            </p>
+
+
+
+            <%= link_to 'Edit', edit_client_path(@client), :class=> "btn btn-warning right_button_section" %>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading click_show_important">
+            All Pets <span class="badge"><%= @client.pet_count(@client.id) rescue "" %></span>
+            <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span>
+          </div>
+          <div class="panel-body important_section">
+                <table class="table table-striped">
+
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Breed(s)</th>
+                    <th>Sex</th>
+                    <th>Age</th>
+                    <th>Status</th>
+                    <th colspan="3"></th>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                  <% @pets.each do |pet| %>
+                      <tr>
+
+                          <% if pet.profile_image.present? %>
+                            <td>
+                              <%=image_tag(pet.profile_image.url(:thumb), :class => "thumb_client img-rounded") %>
+                              <%=image_tag(pet.profile_image.url(:medium), :class => "big_image_client img-rounded") %>
+                            </td>
+                        <% else %>
+                            <td></td>
+                        <% end %>
+
+                        <td><%= pet.pet_name.upcase %></td>
+                        <td>
+                          <%= pet.get_pet_breeds(pet.id).each_char do |b| %>
+                              <%= b.breed rescue ""%>
+                          <% end %>
+                        </td>
+                        <td><%= pet.pet_gender_short %></td>
+                        <td><%= pet.pet_age rescue "" %></td>
+
+                        <% if pet.pet_status_inactive == false%>
+                            <td class="green">
+                        <% else %>
+                            <td class="red">
+                        <% end %>
+                       <%= pet.pet_status%>
+                        <td><%= link_to 'Show', pet , :class=> "btn btn-info btn-sm"%></td>
+                        <td><%= link_to 'Edit', edit_pet_path(pet), :class=> "btn btn-warning btn-sm" %></td>
+
+                      </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading click_show">Authorized Pick Up Person(s)
+      <span class="badge"><%= @client.authorized_person_count(@client.id) rescue "" %></span>
+      <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+    </div>
+    <div class="panel-body section">
+      <%= render 'authorized_people/index' %><br>
+      <%= link_to "Add Authorized Person", new_authorized_person_path(:client_id => @client.id),:class=>"btn btn-success sm right_button_section" %>
+
+    </div>
+  </div>
+</div>
+
+    </div>
+    <div class="col-md-12 ">
+      <%= link_to 'Back', :back, :class => "btn btn-default" %>
+    </div>
+
+
+</div>

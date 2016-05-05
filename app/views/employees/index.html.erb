@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>All Employees</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @employees.each do |employee| %>
+          <tr>
+            <td><%= employee.employee_first_name %></td>
+            <td><%= employee.employee_last_name %></td>
+            <td><%=  number_to_phone(employee.emergency_contact_number, area_code: true)%></td>
+
+            <% if employee.employee_status == false%>
+                <td class="green">
+            <% else %>
+                <td class="red">
+            <% end %>
+            <%= employee.employee_current_status %>
+            <!--<td><%= link_to 'Show', employee, :class=>"btn btn-info sm" %></td>-->
+            <td><%= link_to 'Edit', edit_employee_path(employee), :class=>"btn btn-warning sm"  %></td>
+            <!--<td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= will_paginate @pets, renderer: BootstrapPagination::Rails %>
+    <%= link_to 'New Employee', new_employee_path,  :class=>"btn btn-default" %>
+
+  </div>
+</div>
+<!--<h2>Import Employees</h2>-->
+
+<!--<%= form_tag import_employees_path, multipart: true do %>-->
+    <!--<%= file_field_tag :file %>-->
+    <!--<%= submit_tag "Import" %>-->
+<!--<% end %>-->
+

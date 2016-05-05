@@ -1,0 +1,2 @@
+module PetNamesHelper
+end

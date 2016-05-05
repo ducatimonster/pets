@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Grooming Services</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>Grooming</th>
+      <th>Notes</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @grooming_services.each do |grooming_service| %>
+      <tr>
+        <td><%= grooming_service.service %></td>
+        <td><%= grooming_service.grooming %></td>
+        <td><%= grooming_service.notes %></td>
+        <td><%= link_to 'Show', grooming_service %></td>
+        <td><%= link_to 'Edit', edit_grooming_service_path(grooming_service) %></td>
+        <td><%= link_to 'Destroy', grooming_service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<!--<h2>Import Grooming Services</h2>-->
+
+<!--<%= form_tag import_grooming_services_path, multipart: true do %>-->
+    <!--<%= file_field_tag :file %>-->
+    <!--<%= submit_tag "Import" %>-->
+<!--<% end %>-->
+
+<br>
+

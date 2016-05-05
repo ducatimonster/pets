@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Incident date</th>
+      <th>Pet</th>
+      <th>Incident</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pet_incidents.each do |pet_incident| %>
+      <tr>
+        <td><%= pet_incident.pet.pet_name rescue "" %></td>
+        <td><%= pet_incident.incident %></td>
+        <td><%= link_to 'Show', pet_incident %></td>
+        <td><%= link_to 'Edit', edit_pet_incident_path(pet_incident) %></td>
+        <td><%= link_to 'Destroy', pet_incident, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<!--<h2>Import Pet Incidents</h2>-->
+
+<!--<%= form_tag import_pet_incidents_path, multipart: true do %>-->
+    <!--<%= file_field_tag :file %>-->
+    <!--<%= submit_tag "Import" %>-->
+<!--<% end %>-->
+
+<br>

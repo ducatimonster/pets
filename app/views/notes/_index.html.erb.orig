@@ -1,0 +1,39 @@
+<table class="table-striped">
+
+  <thead>
+  <tr>
+    <th width="150px">Date</th>
+    <th width="600px">Description</th>
+    <th width="150px">Importance</th>
+    <th width="150px">Type</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @notes.each do |note| %>
+      <tr>
+        <td><%= note.created_at.strftime("%m/%d/%Y") rescue ""%></td>
+        <td><%= note.note_description %></td>
+        <td><%= note.note_importance %></td>
+        <td><%= note.note_type.note_type rescue ""%></td>
+        <td><%= link_to 'Show', note, :class=> "btn btn-info btn-sm" %></td>
+        <td><%= link_to 'Edit', edit_note_path(note), :class=> "btn btn-warning btn-sm" %></td>
+        <td><%= link_to 'Delete', note, method: :delete, data: { confirm: 'You are about to PERNAMENTLY DELETE this item. Are you sure?' }, :class=> "btn btn-danger btn-sm" %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+<br>
+
+<h2>Import Notes</h2>
+
+<%= form_tag import_notes_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+
+<br>
+

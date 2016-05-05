@@ -1,0 +1,83 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Client Search</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+
+    <%= form_tag clients_path, :method => 'get' do %>
+        <div class="col-xs-4 ">
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], :placeholder => "Find client", :class => "form-control" %>
+            <span class="input-group-btn">
+             <%= submit_tag "Go", :name => nil, :class => "btn btn-default" %>
+          </span>
+          </div><!-- /input-group -->
+        </div>
+    <% end %><br><br><br>
+
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last name</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Allow contact</th>
+          <th># of Pets</th>
+
+          <th colspan="3"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% @clients.each do |client| %>
+            <tr>
+
+              <td><%= client.client_first_name.capitalize %></td>
+              <td><%= client.client_last_name.capitalize %></td>
+              <td><%= number_to_phone(client.client_telephone , area_code: true) %></td>
+
+
+                <% if client.client_status == false%>
+                      <td class="green">
+                  <% else %>
+                  <td class="red">
+                  <% end %>
+
+             <%= client.client_current_status%>
+              </td>
+              <td><%= client.client_allow_status %></td>
+              <td><%= client.pet_count(client.id) %></td>
+              <td><%= link_to 'Add Pet', new_pet_path(:client_id => client.id), :class=> "btn btn-success btn-sm"%></td>
+              <td><%= link_to 'Show', client, :class=> "btn btn-info btn-sm"%></td>
+              <td><%= link_to 'Edit', edit_client_path(client), :class=> "btn btn-warning btn-sm"%></td>
+              <% if client.pet_count(client.id) == 0 %>
+              <td><%= link_to 'Delete', client, method: :delete, data: { confirm: 'Are you sure?' },  :class=> "btn btn-danger btn-sm" %></td>
+                  <% end %>
+                </tr>
+                <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @clients, renderer: BootstrapPagination::Rails %>
+
+    </div>
+
+
+    <!--<h2>Import Clients</h2>-->
+
+    <!--<%= form_tag import_clients_path, multipart: true do %>-->
+        <!--<%= file_field_tag :file %>-->
+        <!--<%= submit_tag "Import" %>-->
+    <!--<% end %>-->
+
+    <%= link_to 'New Client', new_client_path,  :class=>"btn btn-default" %>
+
+  </div>
+</div>
+
+

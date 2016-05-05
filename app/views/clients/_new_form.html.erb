@@ -1,0 +1,97 @@
+<%= bootstrap_form_for(@client, layout: :inline) do |f| %>
+
+    <div class="top_container">
+      <div style="text-align: center;">
+        <span class="red" style="font-size: 1.2em;">* </span> indicates required fields
+      </div><br>
+
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading click_show_important">Owner's Information
+            <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down" style="display: none"></span>
+          </div>
+          <div class="panel-body  important_section">
+
+            <% if @client.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being saved:</h2>
+
+                  <ul>
+                    <% @client.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+            <% end %>
+
+            <div class="field">
+
+              <%= f.text_field :client_first_name, size: "35", label: "First Name" %>
+            </div>
+            <div class="field">
+
+              <%= f.text_field :client_last_name, size: "35", label: "Last Name" %>
+            </div>
+            <div class="field">
+
+              <%= f.text_field :client_email, size: "40", label: "Email"%>
+            </div><br>
+            <div class="field">
+
+              <%= f.text_field :client_telephone, size: "16", label: "Phone", :class=> "phone" %>
+            </div>
+            <div class="field">
+
+              <%= f.text_field :client_emergency_telephone, size: "16", label: "Emergency Phone", :class=> "phone" %>
+            </div>
+            <div class="field">
+
+              <%= f.text_area :client_address, size: "30x2", label: "Address" %>
+            </div>
+            <div class="field">
+              <%= f.select(:referred, Client::REFERRAL, {include_blank:''}, hide_label: true)%>
+            </div><br>
+            <div class="field">
+              <%= f.check_box :allow_contact, label: "Allow contact" %><br>
+              <%= f.check_box :client_status, label: "Mark if inactive" %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading click_show">
+            Authorized Pickup Person(s) - Optional  <span class="badge"><%= @client.authorized_person_count(@client.id) rescue "" %></span>
+            <span class="glyphicon glyphicon-chevron-down"></span><span class="glyphicon glyphicon-chevron-up" style="display: none"></span>
+          </div>
+          <div class="panel-body section">
+            <div class="form-inline">
+              <%= f.nested_fields_for :authorized_people do |s| %>
+                  <%=s.text_field :full_name, size: "30" %>
+                  <%=s.text_field :authorized_person_telephone, label: "Phone", :class=> "phone",  size: "16" %>
+
+                  <%= s.remove_nested_fields_link "Remove", data: { confirm: 'Are you sure?'} %><br>
+                  <hr>
+
+              <% end %>
+
+              <%= f.add_nested_fields_link :authorized_people, "Add authorized pickup person", class: "add_new" %>
+
+            </div>
+          </div>
+        </div>
+        </div>
+
+    </div><!--top container -->
+
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+
+    </div>
+    </div>
+<% end %>

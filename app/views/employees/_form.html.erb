@@ -1,0 +1,39 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= bootstrap_form_for(@employee) do |f| %>
+        <% if @employee.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+              <ul>
+                <% @employee.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="field">
+
+          <%= f.text_field :employee_first_name, label:"First Name" %>
+        </div>
+        <div class="field">
+
+          <%= f.text_field :employee_last_name, label:"Last Name" %>
+        </div>
+        <div class="field">
+
+          <%= f.text_field :emergency_contact_number, label:"Phone", :class=>"phone", size:"16" %>
+        </div>
+        <div class="field">
+
+          <%= f.check_box :employee_status, label:"Mark if inactive" %>
+        </div>
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<p id="notice"><%= notice %></p>
+
+
+<h1>Pet Search</h1>
+<div class="panel panel-default">
+
+  <div class="panel-body">
+    <div class="top_search_box col-sm-4">
+      <%= form_tag pets_path, :method => 'get' do %>
+          <div class="">
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], :placeholder => "Find pet by pet's or owner's name", :class => "form-control", size: "30" %>
+              <span class="input-group-btn">
+             <%= submit_tag "Go", :name => nil, :class => "btn btn-default" %>
+          </span>
+            </div><!-- /input-group -->
+          </div>
+
+      <% end %>
+    </div><br><br>
+
+    <br>
+    <div class="table-responsive">
+      <table class="table table-striped ">
+
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Breed(s)</th>
+          <th>Sex</th>
+          <th>Status</th>
+          <th>Owner</th>
+          <th>Phone</th>
+          <th colspan="3"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% @pets.each do |pet| %>
+            <tr>
+              <% if pet.profile_image.present? %>
+                  <td><%=image_tag(pet.profile_image.url(:thumb), :class => "thumb img-rounded") %>
+                       <%=image_tag(pet.profile_image.url(:large), :class => "big_image img-rounded") %>
+                  </td>
+                  <% else %>
+                  <td></td>
+                  <% end %>
+
+              <% if pet.pet_gender.casecmp('female') == 0%>
+                  <td class="pink">
+              <% else %>
+                  <td class="blue">
+              <% end %>
+
+              <%= pet.pet_name.upcase %>
+              <td>
+                <%= pet.get_pet_breeds(pet.id).each_char do |b| %>
+                    <b><%= b.breed rescue ""%></b>
+                <% end %>
+              </td>
+              <td><%= pet.pet_gender_short %></td>
+
+              <% if pet.pet_status_inactive == false%>
+                  <td class="green">
+              <% else %>
+                  <td class="red">
+              <% end %>
+
+              <%= pet.pet_status%>
+
+              <!--<td><%= pet.pet_status%></td>-->
+              <td><%= link_to pet.client.client_full_name, clients_show_path(id: pet.client.id), :class=>"btn btn-default btn-xs"%></td>
+              <td><%= number_to_phone(pet.client.client_telephone, area_code: true)rescue ""%></td>
+              <td><%= link_to 'New Visit', new_grooming_path(:pet_id => pet.id), :class=> "btn btn-success btn-sm"   %></td>
+              <td><%= link_to 'Show', pet , :class=> "btn btn-info btn-sm" %></td>
+              <td><%= link_to 'Edit', edit_pet_path(pet),  :class=> "btn btn-warning btn-sm" %></td>
+            </tr>
+
+
+        <% end %>
+        </tbody>
+      </table>
+      <%if @pets.count > 0 %>
+        <%= will_paginate @pets, renderer: BootstrapPagination::Rails %>
+      <%end%>
+
+    </div>
+
+    <br>
+
+    <!--<h2>Import Pets</h2>-->
+
+    <!--<%= form_tag import_pets_path, multipart: true do %>-->
+        <!--<%= file_field_tag :file %>-->
+        <!--<%= submit_tag "Import" %>-->
+    <!--<% end %>-->
+
+
+
+    <br>
+
+
+  </div>
+</div>

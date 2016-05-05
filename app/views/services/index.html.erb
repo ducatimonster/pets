@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Service List</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @services.each do |service| %>
+          <tr>
+
+            <td><%= service.service_name %></td>
+            <td><%= service.service_description %></td>
+            <!--<td><%= link_to 'Show', service, :class=>"btn btn-info sm" %></td>-->
+            <td><%= link_to 'Edit', edit_service_path(service), :class=>"btn btn-warning sm" %></td>
+            <!--<td><%= link_to 'Destroy', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= will_paginate @services, renderer: BootstrapPagination::Rails %>
+
+    <br>
+
+    <!--<h2>Import Services</h2>-->
+
+    <!--<%= form_tag import_services_path, multipart: true do %>-->
+        <!--<%= file_field_tag :file %>-->
+        <!--<%= submit_tag "Import" %>-->
+        <!--<% end %>-->
+
+    <br>
+
+    <%= link_to 'New Service', new_service_path,  :class=>"btn btn-default" %>
+
+  </div>
+</div>

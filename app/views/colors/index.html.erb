@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pet Coat Color List</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Color</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @colors.each do |color| %>
+          <tr>
+            <td><%= color.color_name %></td>
+            <!--<td><%= link_to 'Show', color,  :class=>"btn btn-info sm" %></td>-->
+            <td><%= link_to 'Edit', edit_color_path(color), :class=>"btn btn-warning sm" %></td>
+            <!--<td><%= link_to 'Destroy', color, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @colors, renderer: BootstrapPagination::Rails %><br>
+    <%= link_to 'New Color', new_color_path,  :class=>"btn btn-default" %>
+    <br>
+
+    <!--<h2>Import Colors</h2>-->
+
+    <!--<%= form_tag import_colors_path, multipart: true do %>-->
+        <!--<%= file_field_tag :file %>-->
+        <!--<%= submit_tag "Import" %>-->
+        <!--<% end %>-->
+
+    <br>
+
+
+
+
+  </div>
+</div>
+

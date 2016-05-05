@@ -1,0 +1,37 @@
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= bootstrap_form_for(@note) do |f| %>
+        <% if @note.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:</h2>
+
+              <ul>
+                <% @note.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="field">
+          <%= f.select(:note_importance, Note::NOTE_IMPORTANCE,  include_blank: true, :label => "Importance") %>
+        </div>
+        <div class="field">
+          <%= f.collection_select(:note_type_id, NoteType.all.order(note_type: :asc), :id, :note_type, include_blank: true, :label => "Type")%>
+        </div><br>
+        <div class="field">
+          <%= f.text_area :note_description, :label => "Description", :size=>"50x3"  %>
+        </div>
+
+        <div class="field">
+
+          <%= f.hidden_field :pet_id %>
+        </div>
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+    <% end %>
+
+  </div>
+</div>

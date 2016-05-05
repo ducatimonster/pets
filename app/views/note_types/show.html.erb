@@ -1,0 +1,17 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Note type:</strong>
+      <%= @note_type.note_type %>
+    </p>
+
+    <%= link_to 'Edit', edit_note_type_path(@note_type), :class=>"btn btn-warning" %>
+    <%= link_to 'New Note Type', note_types_path, :class=>"btn btn-success" %>
+    <%= link_to 'Back to Note Type List', note_types_path, :class=>"btn btn-primary" %>
+  </div>
+</div>
+

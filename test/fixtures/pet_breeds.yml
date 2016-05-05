@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pet_id: 
+  breed_id: 
+  notes: MyText
+
+two:
+  pet_id: 
+  breed_id: 
+  notes: MyText

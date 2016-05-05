@@ -1,0 +1,58 @@
+// Place all the styles related to the Pets controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.info_box{
+  border: 1px solid red;
+
+}
+
+.form_box{
+  border: 1px solid blue;
+  float: left;
+}
+
+.visit_wrapper{
+  border: 1px solid green;
+
+}
+
+.pet_left {
+  float: left;
+  width: 40%;
+
+}
+
+.pet_middle {
+  width: 20%;
+  float: left;
+}
+
+.pet_right {
+  width: 30%;
+  float: left;
+}
+
+.pink {
+  color: deeppink;
+  font-weight: bold;
+}
+
+
+.blue {
+  color: blue;
+  font-weight: bold;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  height: 350px;
+  margin: auto;
+}
+
+.carousel-control:hover {
+  //background:#ffc5d1;
+  background:transparent;
+}
+

@@ -1,0 +1,104 @@
+<p id="notice"><%= notice %></p>
+<h1>Expiring/Expired Rabies Vaccinations Report</h1>
+
+<%= form_tag("expired_rabies", method: "get", :class=>"form-inline") do %>
+
+    <div class="panel panel-info">
+      <div class="panel-body">
+        <div class="form-group">
+            Search for pets with Rabies expiration date that falls between
+            <%= date_field_tag(:begindate, @begindate, :class => "form-control", :id => "begin_date")%>
+            and
+            </div>
+
+        <div class="form-group">
+          <%= date_field_tag(:enddate, @enddate, :class => "form-control", :id => "end_date") %>
+          sort by
+          </div>
+
+        <div class="form-group">
+          <%= select_tag 'order', options_for_select(['Ascending', 'Descending']), { class: 'form-control'} %>
+          <%= submit_tag("Search",  :class => "btn btn-default") %>
+          </div>
+        </div>
+
+      </div>
+<%  end %>
+
+
+<div class="panel panel-info">
+  <% if params[:begindate] == Date.today || params[:begindate] == nil  %>
+      <div class="panel-heading">Pets with Rabies expiration date <b>today</b></div>
+  <% elsif params[:begindate].present? &&  params[:enddate].present? %>
+      <div class="panel-heading">Pets with Rabies expiration date between
+        <b><%= @beginF %></b>
+        and <b>
+        <%= @endF %></b>,
+        sorted in <b><%= params[:order] %></b> order
+
+      </div>
+  <% end %>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Pet</th>
+        <th>Sex</th>
+        <!--<th>Given Date</th>-->
+        <th>Expiration Date</th>
+        <th>Vaccination Status</th>
+        <th>Allow Contact</th>
+        <th>Client</th>
+        <th>Phone</th>
+        <th colspan="3"></th>
+      </tr>
+
+
+      </thead>
+
+      <tbody>
+      <% @shot_records.each do |p| %>
+          <tr>
+            <% if p.pet.profile_image.present? %>
+                <td><%=image_tag(p.pet.profile_image.url(:thumb), :class => "thumb img-rounded") %>
+                </td>
+            <% else %>
+                <td></td>
+            <% end %>
+            <td><%= link_to p.pet.pet_name.upcase, pets_show_path(id: p.pet.id), :style=>"text-decoration: underline;", :target => "_blank" %></td>
+            <td><%= p.pet.pet_gender_short%></td>
+            <!--<td><%= p.shot_date.strftime("%m/%d/%Y") rescue ""%></td>-->
+            <td><%= p.shot_expiration.strftime("%m/%d/%Y") rescue "" %></td>
+            <% if p.vaccination_current.casecmp('valid') == 0%>
+                <td class="green">
+            <% else %>
+                <td class="red">
+            <% end %>
+            <%= p.vaccination_current%>
+
+            <% if p.pet.client.client_allow_status.casecmp('yes') == 0%>
+                <td class="green">
+            <% else %>
+                <td class="red">
+            <% end %>
+            <%= p.pet.client.client_allow_status %>
+            <td><%= link_to p.pet.client.client_full_name, clients_show_path(id: p.pet.client.id), :style=>"text-decoration: underline;", :target => "_blank"  %></td>
+            <td><%= number_to_phone(p.pet.client.client_telephone, area_code: true)rescue ""%></td>
+
+          </tr>
+      <% end %>
+
+      </table>
+  </div>
+  <div class="panel-footer">
+    <%if @shot_records.count > 0 %>
+        <%= will_paginate @shot_records, renderer: BootstrapPagination::Rails %>
+    <%end%>
+
+
+  </div>
+</div>
+
+
+

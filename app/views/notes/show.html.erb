@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pet Note Confirmation</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p>
+      <strong>Pet:</strong>
+      <%= @note.pet.pet_name %>
+    </p>
+
+    <p>
+      <strong>Note description:</strong>
+      <%= @note.note_description %>
+    </p>
+
+    <p>
+      <strong>Note importance:</strong>
+      <%= @note.note_importance %>
+    </p>
+
+    <p>
+      <strong>Note type:</strong>
+      <%= @note.note_type.note_type %>
+    </p>
+
+
+
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'Edit', edit_note_path(@note), :class=> "btn btn-warning"   %>
+    <%= link_to 'Add Note', new_note_path(:pet_id => @note.pet.id), :class=> "btn btn-success"   %>
+    <%= link_to 'Back to ' + @note.pet.pet_name + '\'s Profile' , pets_show_path(id: @note.pet.id), :class=> "btn btn-info"  %>
+  </div>
+</div>

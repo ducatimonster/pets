@@ -1,0 +1,99 @@
+
+    <%= bootstrap_form_for(@grooming ,layout: :inline) do |f| %>
+        <% if @grooming.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@grooming.errors.count, "error") %> prohibited this grooming from being saved:</h2>
+
+              <ul>
+                <% @grooming.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+<div class="container-fluid">
+  <div class="well">
+    <!--<div class="panel-body">-->
+    <!--<div class="">-->
+    Pet Name: <b><%=@grooming.pet.pet_name rescue "" %></b><br>
+    Breeds(s):
+              <%= @grooming.pet.pet_breeds.b rescue "" %>
+              <% @grooming.pet.pet_breeds.each do |b| %>
+                  <b>[<%= b.breed.breed %>]</b><br>
+              <% end %>
+    Owner Name: <b><%=@grooming.pet.client.client_full_name rescue "" %></b><br>
+    Phone: <b><%= number_to_phone(@grooming.pet.client.client_telephone , area_code: true)rescue ""%></b>
+    <!--</div>-->
+    <!--<div class="">-->
+    <!--<%= image_tag @grooming.pet.profile_image.url(:thumb) rescue ""%>-->
+    <!--</div>-->
+    <!--</div>-->
+  </div>
+<div class="top_container">
+  <div class="panel-group">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Basic Visit Information</div>
+        <div class="panel-body">
+
+          <div class="field">
+            <%= f.date_field :date, label: "Visit Date" %>
+          </div>
+          <div class="field">
+            <!--<%= f.time_select :arrival_time,{ampm: true} %>-->
+            <%= f.time_field (:arrival_time), {ampm: true}%>
+          </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="field">
+            <%= f.datetime_local_field (:pickup_time) %>
+            <!--<%= f.datetime_select :pickup_time, {ampm: true}, :default => Time.now.strftime('%H:%M') %>-->
+          </div><br>
+
+          <div class="field"><b>Check where applicable:</b><br>
+            <%= f.check_box :fleas_ticks, label:"Has fleas or ticks" %><br>
+            <%= f.check_box :matted_tangled, label:"Has Matted or tangled fur" %>
+          </div><br>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">Services</div>
+        <div class="panel-body">
+
+          <div class="top_container">
+            <span class="red", style="font-size: 1.2em; margin-left: 5%;">* </span> indicates required fields
+          </div><br>
+
+          <div class="field">
+            <%= f.nested_fields_for :grooming_services do |s| %>
+                <%= s.collection_select(:service_id, Service.where("service_status_inactive = ?", false), :id, :service_name, {include_blank:''}) %>
+                <%= s.collection_select(:employee_id, Employee.where("employee_status = ?", false), :id, :employee_full_name, {include_blank:''}) %>
+                <%= s.text_area :notes, size: "30x3" %>
+                <%= s.remove_nested_fields_link "remove", data: {} %>
+
+            <% end %>
+            <%= f.add_nested_fields_link :grooming_services, "Add service", :class => 'btn btn-success btn-xs'%>
+
+            <div class="field">
+              <%= f.hidden_field :pet_id %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><br>
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-default"%>
+  </div>
+</div>
+
+
+
+  <% end %>
+
+
+
+

@@ -1,0 +1,16 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Vaccination name:</strong>
+      <%= @vaccination.vaccination_name %>
+    </p>
+
+    <%= link_to 'Edit', edit_vaccination_path(@vaccination), :class=>"btn btn-warning" %>
+    <%= link_to 'New Vaccination', new_vaccination_path, :class=> "btn btn-success"  %>
+    <%= link_to 'Back to Vaccination List', vaccinations_path, :class=>"btn btn-primary" %>
+  </div>
+</div>

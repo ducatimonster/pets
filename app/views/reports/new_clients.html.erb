@@ -1,0 +1,88 @@
+<p id="notice"><%= notice %></p>
+<h1>New Clients Report</h1>
+
+<%= form_tag("new_clients", method: "get", :class=>"form-inline") do %>
+
+    <div class="panel panel-info">
+      <div class="panel-body">
+        <div class="form-group">
+          Search clients with newly created account that falls between
+          <%= date_field_tag(:begindate, @begindate, :class => "form-control", :id => "begin_date")%>
+          and
+        </div>
+
+        <div class="form-group">
+          <%= date_field_tag(:enddate, @enddate, :class => "form-control", :id => "end_date") %>
+          sort by
+        </div>
+
+        <div class="form-group">
+          <%= select_tag 'order', options_for_select(['Ascending', 'Descending']), { class: 'form-control'} %>
+          <%= submit_tag("Search",  :class => "btn btn-default") %>
+        </div>
+      </div>
+
+    </div>
+<%  end %>
+
+
+<div class="panel panel-info">
+  <% if params[:begindate] == Date.today || params[:begindate] == nil  %>
+      <div class="panel-heading"><b>Today's</b> New Clients</div>
+  <% elsif params[:begindate].present? &&  params[:enddate].present? %>
+      <div class="panel-heading">Clients with account created between
+        <b><%= @beginF %></b>
+        and <b>
+        <%= @endF %></b>,
+        sorted in <b><%= params[:order] %></b> order
+
+      </div>
+  <% end %>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Created at</th>
+        <th>Client</th>
+        <th>Phone</th>
+        <th># Pets</th>
+        <th>Allow Contact</th>
+        <th colspan="3"></th>
+      </tr>
+
+
+      </thead>
+
+      <tbody>
+      <% @clients.each do |p| %>
+          <tr>
+            <td><%= p.created_at.strftime("%m/%d/%Y at %I:%M%p")%></td>
+            <td><%=link_to p.client_full_name, clients_show_path(id: p.id), :style=>"text-decoration: underline;", :target => "_blank"  rescue ""%></td>
+            <td><%= number_to_phone(p.client_telephone, area_code: true)rescue ""%></td>
+            <td><%= p.pet_count(p.id) %></td>
+            <% if p.pet_count(p.id) == 0 %>
+                <td><%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' },  :class=> "btn btn-danger btn-sm" %></td>
+            <% end %>
+
+            <% if p.client_allow_status.casecmp('yes') == 0%>
+                <td class="green">
+            <% else %>
+                <td class="red">
+            <% end %>
+            <%= p.client_allow_status %>
+
+          </tr>
+      <% end %>
+
+      </table>
+  </div>
+  <div class="panel-footer">
+    <!--<%if @clients.count > 0 %>-->
+        <%= will_paginate @clients, renderer: BootstrapPagination::Rails %>
+    <%end%>
+<!---->
+  </div>
+</div>
+
+
+

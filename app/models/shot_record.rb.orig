@@ -1,0 +1,44 @@
+class ShotRecord < ActiveRecord::Base
+  belongs_to :vaccination
+  belongs_to :pet
+  require 'roo'
+
+  validates :vaccination_id, :shot_date, :shot_expiration, :pet_id, presence: true
+
+  validates :vaccination_id, :shot_date, :shot_expiration, :pet_id, presence: true
+
+  def self.pet_shot_records(pet_id)
+    @shot_records = ShotRecord.where(pet_id: pet_id).order(shot_expiration: :desc)
+  end
+
+  def self.import(file)
+    allowed_attributes = ['shot_record']
+    spreadsheet = open_spreadsheet(file)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      shot_record = find_by_id(row["id"]) || new
+      shot_record.attributes = row.to_hash.slice(*row.to_hash.keys)
+      shot_record.save!
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+      when ".csv" then Roo::CSV.new(file.path, nil, :ignore)
+      when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+      when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+      else raise "Unknown file type: #{file.original_filename}"
+    end
+  end
+
+
+  def vaccination_current
+    # self.shot_expiration.to_s < Date.today.to_s
+    if self.shot_expiration.to_s < Date.today.to_s
+      "Expired"
+    else
+      "Valid"
+    end
+  end
+end

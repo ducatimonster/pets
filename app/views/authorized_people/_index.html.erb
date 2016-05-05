@@ -1,0 +1,20 @@
+<table class="table-striped">
+  <caption>Authorized Pickup People</caption>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Phone</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @authorized_people.each do |authorized_person| %>
+      <tr>
+        <td><%= authorized_person.full_name.split.map(&:capitalize).join(' ') %></td>
+        <td><%=  number_to_phone(authorized_person.authorized_person_telephone , area_code: true)%></td>
+        <td><%= link_to 'Edit', edit_authorized_person_path(authorized_person), :class => "btn btn-warning btn-xs" %></td>
+        <td><%= link_to 'Delete', authorized_person, method: :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-danger btn-xs"%></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

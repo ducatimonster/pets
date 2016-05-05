@@ -1,0 +1,48 @@
+<h1>All Breeds</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p id="notice"><%= notice %></p>
+
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Breed List</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @breeds.each do |breed| %>
+          <tr>
+            <td><%= breed.breed %></td>
+            <!--<td><%= link_to 'Show', breed, :class=>"btn btn-info sm" %></td>-->
+            <td><%= link_to 'Edit', edit_breed_path(breed), :class=>"btn btn-warning sm" %></td>
+            <!--<td><%= link_to 'Destroy', breed, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+          </tr>
+      <% end %>
+      </tbody>
+
+    </table>
+
+
+    <%= will_paginate @pets, renderer: BootstrapPagination::Rails %><br>
+
+    <%= link_to 'New Breed', new_breed_path,  :class=>"btn btn-default" %>
+
+    <!--<% if false %>-->
+        <!--<br>-->
+
+
+        <!--<h2>Import Breeds</h2>-->
+
+        <!--<%= form_tag import_breeds_path, multipart: true do %>-->
+            <!--<%= file_field_tag :file %>-->
+            <!--<%= submit_tag "Import" %>-->
+            <!--<% end %>-->
+        <!--<%end%>-->
+
+  </div>
+</div>
+
